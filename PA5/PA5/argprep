@@ -1,0 +1,39 @@
+s/  */ /g;s/^ //;s/ $//;
+s/insert/put/;s/^throw\>/drop/;s/^take\>/get/;s/^x$/l/;s/^l /x /
+s/\<palms/tree/g;s/\<emerald/bracelet/g;s/\<card/board/g;s/\<cpu/board/g
+
+N
+/^\n/     d    
+/^i\>/    ci
+/^l\>/    cl
+/^[^x]\>/ cI don't understand that
+s/^shake/s/;s/^climb/c/;s/^get/g/;s/^put/p/;s/^eat/e/;s/^drop/d/
+s/^c\n.*tree/c tree\ntree/;/^c\n/cThere is nothing here to climb.
+/^.[^ \n]/  cI don't understand that
+/^.\n/    cYou must supply an object.
+/^g all\>/cg all
+
+h;s/\n.*/\nbear bin bins board boulder bracelet cabinet coconut coconuts computer food key lamp shovel tree trees vax/
+/^. \([^ ]*\)\>.*\n.*\<\1\>/bO
+         cI do not know what that is.
+
+:O;#Now we know the object exists. But we don't know about indirect objects
+/^p\( [^ ]*\)\{,2\}\n/cYou must supply an indirect object.
+
+/^p/!bW
+/^p\( \([^ ]*\)\>\)\{3\}.*\n.*\2/!cI do not know what that indirect object is.
+
+:W
+#Let's remove uneeded arguments
+g
+s/^\(p\( [^ ]*\)\{3\}\).*\n/\1\n/
+s/^\([^p] [^ ]*\).*\n/\1\n/
+
+#So the object(s) are real. But are they here?
+#And do we care if they are here? Answers:
+#No:  drop, eat, put-first-object
+/^[de]/{s/\n.*//;q;}
+#Yes: climb, get. Maybe: put-indirect-object, shake, x
+/.* \([^ ]*\)\n.*\1/{s/\n.*//;q;}
+/^[cg]/cI do not see that here.
+s/\n.*/ @/

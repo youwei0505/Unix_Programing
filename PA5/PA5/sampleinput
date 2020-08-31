@@ -1,0 +1,45 @@
+x shovel
+get shovel
+climb shovel
+drop shovel
+eat shovel
+shake shovel
+put shovel
+x tree
+get tree
+climb tree
+drop tree
+eat tree
+shake tree
+put tree
+x boulder
+get boulder
+climb boulder
+drop boulder
+eat boulder
+shake boulder
+put boulder
+x lamp
+get lamp
+climb lamp
+drop lamp
+eat lamp
+shake lamp
+put lamp
+x abc123
+get abc123
+climb abc123
+drop abc123
+eat abc123
+shake abc123
+put abc123
+put tree in tree
+put lamp in tree
+put boulder in tree
+put abc123 in tree
+put lamp in lamp
+put lamp in shovel
+put lamp in boulder
+put lamp in abc123
+put shovel in abc123
+quit

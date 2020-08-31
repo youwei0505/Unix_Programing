@@ -1,0 +1,175 @@
+                            UNIX System Programming
+                           Programming Assignment #5
+
+Due: Sunday, June 14  at  noon (solution will be posted on Sunday afternoon,
+     to give you time to see it before the final exam on Monday June 15th).
+     (This is the final programming assignment for this course, so make the
+     effort to complete it.)
+
+Submission method: You will post to the course website, just like the previous
+                   assignment. 
+
+Submission rules: I REQUIRE you to FOLLOW THESE RULES:
+
+                  1. Submit one file named "<your student ID>.PA5.awk"
+
+                  2. Submissions made after the deadline will be ignored.
+                     (That means: no late submissions on this assignment.)
+                     (By the way, assignments are a significant part of your
+                      grade. So start early and ask questions.)
+                  
+                  This is a large class. Unless each of you follows the above
+                  rules, the TAs' work becomes so hard. So I INSIST that you 
+                  FOLLOW the above rules. If you don't, we won't accept your 
+                  homework.
+
+                  If you have questions about these rules, you may post your 
+                  questions to the course website.
+
+
+Getting help:   - The Professor has office hours on Monday from 12:30-2:30, 
+                  and on Friday from 10:00-12:00, in room 9037.  He can also 
+                  be reached by email.
+                - The TAs are also available to answer your questions.
+                - Questions about the assignment can be posted to the 
+                  Discussion Forum.
+                - You may also discuss the ideas of the assignment with your
+                  classmates. Such discussions can be quite helpful to your 
+                  learning -- IF you ONLY talk about the general concepts of
+                  the steps of the assignment.
+                - If, however, you tell other students the specific details
+                  of your implementation, then you are not helping each other
+                  to learn; you are just doing the work for them.
+                  In other words, you are cheating. You CANNOT show another
+                  student ANY part of the answer to the assignment.
+
+Cheating policy:  We encourage students to form study groups. But this does not
+                  mean sharing code. If students are found to be sharing work,
+                  they can receive a 0 for the entire course, or worse.
+                  It is cheating to let another student see your work, or to 
+                  let them look over your shoulder when your code is on the
+                  screen.
+                  A good way to know you cheated: if you have code that is in
+                  your solution just because another student told you to put
+                  it there, but you don't actually understand it.
+                  If you are still unsure, you can ask the TA for more
+                  explanation.
+                  We always look for evidence of cheating, so don't do it.
+                  (In any event, even if you do not get caught, those who 
+                  copy the homework will not learn the material, so they 
+                  will fail the exam.)
+
+Most Important    The programming assignments are a large part of the grade.
+Things to Know:   This large point value means that, if you don't do them, you
+                  may fail.
+                  The large point value also explains why the policy against
+                  cheating is strictly enforced.
+                  
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ - - - - - - - - - - - - - - -  Project Overview - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+In the previous programming assignment, we used sed to perform some processing
+on the commands for the dunnet game. We will now take the answer from that sed
+program, and process it further, using awk. We will not complete the entire
+game, however.
+
+If you are reading this README file then you will have noticed the other files
+in this directory:
+
+% ls
+argprep  PA5.csh  README.PA5  sampleinput  sampleoutput
+%
+
+The argprep file is my solution to the previous homework.
+
+The PA5.csh file is a modified version of Programming assignment 3. It is a
+script that get commands and runs the game. It implements some parts of the
+game in cshell. It also uses argprep and you PA5 solution to process some of
+the game commands. To keep things simple, PA5.csh is not a full implementation
+of the game. If you look at the script, you will see what I mean by that: it
+uses your PA5 awk file to process commands, but it never DOES anything. For
+example, you may try to get the shovel or the tree; if so, the PA5.csh will
+tell you if you can get the indicated object -- but it doesn't actually move
+any files. This is the expected behavior; don't worry about it. This assignment
+is just about testing your awk program.
+
+The sample input file provides some tests for you to run. Of course the TA will
+also test other inputs besides the ones provided here. Let's look at the file:
+
+% head sampleinput
+x shovel
+get shovel
+climb shovel
+drop shovel
+eat shovel
+shake shovel
+put shovel
+x tree
+get tree
+climb tree
+%
+
+The sampleoutput file contains the corresponding output. Let's see it:
+% ./PA5.csh < sampleinput > yoursampleoutput
+% diff sampleoutput yoursampleoutput
+% head -20 sampleoutput
+>x shovel
+sed output was: x shovel
+awk output was: x shovel
+>get shovel
+sed output was: g shovel
+awk output was: g shovel
+>climb shovel
+sed output was: c shovel
+awk output was: c shovel
+>drop shovel
+sed output was: d shovel
+awk output was: You don't have that.
+>eat shovel
+sed output was: e shovel
+awk output was: You don't have that.
+%
+
+We see that the command is printed, then the output of sed (which, in turn,
+becomes one of the inputs to awk), then the output of awk. Please note that
+none of the above actions actually occur. For example, one of the commands
+was "get shovel". That command was understood and it gave no error. But it
+the shovel did not actually get moved to the inventory. (You can put it their
+yoursel, if you want to test that situation -- but you'll need to change the
+script to allow that, because it currently unpacks PA2.tar each time it is
+run.)
+
+Let's see the portion of PA5.csh that is responsible for creating those sed
+and awk outputs:
+
+% cat PA5.csh | sed -n 46,52p
+    default:
+      echo $x:q
+      (echo $x:q;ls ???*|sed ':a;$'\!'{N;ba;};s,\n, ,g')|sed -f ~/argprep > F
+      echo "sed output was:" `cat F`
+      echo -n "awk output was: "
+      ls ~/I|awk -f ~/[BMDIJ]0[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9].PA5.awk
+  endsw
+%
+
+Looking at the above, we see that sed's output goes to a file, named "F".
+We also see that that file is not passed into awk (but we learned that awk's
+getline command lets you get information from a file). 
+As far as the input sent to awk, it is the contents of the inventory. (When the
+game begins, that inventory contains only the lamp. The provided sampleoutput
+was generated with the inventory having only the lamp -- but you should run
+other tests also, by copying in some files for other game objects.)
+
+As a final note, I will say that the output error message of my implementation
+is sometimes different than the actual, for the put command. This is fine,
+because it only manifests when the put command has more than one error. (Don't
+understand? No problem. Just make your output match mine, and don't worry about
+small differences from the actual game.)
+
+Well, that is the assignment. The implementation of the awk program is up to
+you. But if your program is very large, you are probably making it harder than
+it needs to be (for reference, my solution is 23 lines, with 558 characters).
+
+Please start early. I hope you do well.

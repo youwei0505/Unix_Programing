@@ -1,0 +1,139 @@
+Dead end
+You are at a dead end of a dirt road.  The road goes to the east.
+In the distance you can see that it will eventually fork off.  The
+trees here are very tall royal palms, and they are spaced equidistant
+from each other.
+>x shovel
+sed output was: x shovel
+awk output was: x shovel
+>get shovel
+sed output was: g shovel
+awk output was: g shovel
+>climb shovel
+sed output was: c shovel
+awk output was: c shovel
+>drop shovel
+sed output was: d shovel
+awk output was: You don't have that.
+>eat shovel
+sed output was: e shovel
+awk output was: You don't have that.
+>shake shovel
+sed output was: s shovel
+awk output was: You don't have that.
+>put shovel
+sed output was: You must supply an indirect object.
+awk output was: You must supply an indirect object.
+>x tree
+sed output was: x tree
+awk output was: x tree
+>get tree
+sed output was: g tree
+awk output was: g tree
+>climb tree
+sed output was: c tree
+awk output was: c tree
+>drop tree
+sed output was: d tree
+awk output was: You don't have that.
+>eat tree
+sed output was: e tree
+awk output was: You don't have that.
+>shake tree
+sed output was: s tree
+awk output was: s tree
+>put tree
+sed output was: You must supply an indirect object.
+awk output was: You must supply an indirect object.
+>x boulder
+sed output was: x boulder @
+awk output was: I don't see that here.
+>get boulder
+sed output was: I do not see that here.
+awk output was: I do not see that here.
+>climb boulder
+sed output was: I do not see that here.
+awk output was: I do not see that here.
+>drop boulder
+sed output was: d boulder
+awk output was: You don't have that.
+>eat boulder
+sed output was: e boulder
+awk output was: You don't have that.
+>shake boulder
+sed output was: s boulder @
+awk output was: You don't have that.
+>put boulder
+sed output was: You must supply an indirect object.
+awk output was: You must supply an indirect object.
+>x lamp
+sed output was: x lamp @
+awk output was: x lamp 
+>get lamp
+sed output was: I do not see that here.
+awk output was: I do not see that here.
+>climb lamp
+sed output was: I do not see that here.
+awk output was: I do not see that here.
+>drop lamp
+sed output was: d lamp
+awk output was: d lamp
+>eat lamp
+sed output was: e lamp
+awk output was: e lamp
+>shake lamp
+sed output was: s lamp @
+awk output was: s lamp 
+>put lamp
+sed output was: You must supply an indirect object.
+awk output was: You must supply an indirect object.
+>x abc123
+sed output was: I do not know what that is.
+awk output was: I do not know what that is.
+>get abc123
+sed output was: I do not know what that is.
+awk output was: I do not know what that is.
+>climb abc123
+sed output was: I do not know what that is.
+awk output was: I do not know what that is.
+>drop abc123
+sed output was: I do not know what that is.
+awk output was: I do not know what that is.
+>eat abc123
+sed output was: I do not know what that is.
+awk output was: I do not know what that is.
+>shake abc123
+sed output was: I do not know what that is.
+awk output was: I do not know what that is.
+>put abc123
+sed output was: I do not know what that is.
+awk output was: I do not know what that is.
+>put tree in tree
+sed output was: p tree in tree
+awk output was: You don't have that.
+>put lamp in tree
+sed output was: p lamp in tree
+awk output was: p lamp in tree
+>put boulder in tree
+sed output was: p boulder in tree
+awk output was: You don't have that.
+>put abc123 in tree
+sed output was: I do not know what that is.
+awk output was: I do not know what that is.
+>put lamp in lamp
+sed output was: p lamp in lamp @
+awk output was: p lamp in lamp 
+>put lamp in shovel
+sed output was: p lamp in shovel
+awk output was: p lamp in shovel
+>put lamp in boulder
+sed output was: p lamp in boulder @
+awk output was: That indirect object is not here.
+>put lamp in abc123
+sed output was: I do not know what that indirect object is.
+awk output was: I do not know what that indirect object is.
+>put shovel in abc123
+sed output was: I do not know what that indirect object is.
+awk output was: I do not know what that indirect object is.
+>quit
+You have scored 0 out of a possible 90 points.
