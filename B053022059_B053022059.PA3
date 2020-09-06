@@ -1,0 +1,791 @@
+#! /usr/bin/tcsh
+
+rm -f ~/X ~/O ~/I ~/A
+ln -s /dev/null ~/X
+ln -s ~/PA2/inventory ~/I
+ln -s ~/PA2/objects ~/O
+ln -s ~/PA2/obj ~/A
+alias nogo echo "You cannot go that way."
+alias nokey echo "You do not have a key that can open this door."
+
+alias l 'mv 1 9 >& ~/X '
+alias drop '~/drop.sh'
+
+set nonget = (board bracelet card cpu emerald food key lamp shovel)
+#echo hello000
+cd; 
+#PS1='>'; every line input >>>>> 
+chmod 777 ~/PA2/start/e/e/ne/ne/ne ; chmod 777 ~/PA2/start/e/e/ne/ne/ne/n ; rm -rf ~/PA2 ; tar xvf PA1.tar >& ~/X; cd ~/PA2/start ; l
+
+#for starting l
+head -n `find 9 || find 1` .d ; mv 9 1 
+
+(ls ???* >& ~/X && ls ???* ) | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts 
+echo -n
+
+#echo hello000
+set cant_climb = ( tree )
+#set now = `pwd -P`
+#echo now : $now
+
+	
+echo -n '>'	
+set input = ( $< )
+#echo input = $input
+while ( $#input == 0 )
+	#echo 0
+	echo -n '>'	
+	set input = ( $< )
+end
+#echo not 0
+
+while ( 1 )
+	#echo while2
+	set now = `pwd -P`
+	#echo now : $now
+	#echo before_switch_input1 = $input[1]	
+	#echo before_switch_input2 = $input[2]
+	switch ( $input[1] ) 
+	
+		case {put}:
+			#echo put 
+			
+			### check if only one input ornot###
+			if ( $#input == 1 )then
+				echo You must supply an object.
+				breaksw
+			endif		
+			### check if only one input ornot###
+			
+			if ( -e ~/O/$input[2] )then
+				;
+			else
+				echo "I don't know what that object is."
+				breaksw
+			endif
+			if ( -e ~/I/$input[2] )then
+				;
+			else
+				echo "You don't have that."
+				breaksw
+			endif
+			
+			if ( $#input == 1 )then
+				echo "You must supply an object"
+				breaksw	
+			else if ( $#input == 2 ||  $#input == 3 )then
+				echo "You must supply an indirect object."
+				breaksw				
+			else if ( $#input == 4 )then
+				#echo 4
+						
+				if ( -e ~/I/$input[2] )then
+					#echo i 2
+					
+					if ( -e `pwd -P`/$input[4] || -e ~/I/$input[4] )then							
+							
+						if ( ( $input[2] == 'card' || $input[2] == 'board' || $input[2] == 'cpu' ) && ( $input[4] == 'vax' || $input[4] == 'computer' || $input[4] == 'cabinet' ) )then
+							echo "As you put the CPU board in the computer, it immediately springs to life.\nThe lights start flashing, and the fans seem to startup."
+							rm ~/I/card ~/I/board ~/I/cpu 
+							mv steady .steady
+							mv .flashing flashing
+							breaksw
+						endif
+						if ( -e `pwd -P`/$input[4] || -e ~/I/$input[4] )then					
+							echo "I don't know how to combine those objects.  Perhaps you should\njust try dropping it."
+							breaksw
+						else
+							echo "That indirect object is not here." 
+							breaksw							
+						endif
+					else
+						echo "That indirect object is not here." 
+						breaksw						
+					endif	
+					
+				else						
+					echo "You don't have that."
+					breaksw
+				endif
+			else
+				echo "You must supply an object"					
+			endif
+			
+			breaksw
+			
+			
+		case {eat}:
+			#echo in_eat
+			### check if only one input ornot###
+			if ( $#input == 1 )then
+				echo You must supply an object.
+				breaksw
+			endif		
+			### check if only one input ornot###
+			if ( -e ~/I/$input[2] && $#input != 2 )then				
+				breaksw	
+			endif
+			
+			if ( -e ~/O/$input[2] )then
+				;
+			else
+				echo "I don't know what that is."
+				breaksw
+			endif
+			if ( -e ~/I/$input[2] )then
+				;
+			else
+				echo "You don't have that."
+				breaksw
+			endif
+			
+			
+			
+			
+			if ( -e ~/I/$input[2] && $input[2] == 'food' )then
+				echo "That tasted horrible."
+				rm ~/I/$input[2]
+				breaksw	
+			else if ( -e ~/I/$input[2] && $input[2] == 'key' )then
+				echo "You forcefully shove a brass key down your throat, and start choking.\n"
+				echo "You are dead.\nYou have scored 0 out of a possible 90 points.\n"					
+				exit
+			else if ( -e ~/I/$input[2] )then
+				echo "You forcefully shove a $input[2] down your throat, and start choking.\n"
+				echo "You are dead.\nYou have scored 0 out of a possible 90 points.\n"					
+				exit
+			else
+				echo "You don't have that."	
+				breaksw
+			endif
+			
+			
+			
+			breaksw
+			
+		case {shake}:
+			#echo shake
+			
+			### check if only one input ornot###
+			if ( $#input == 1 )then
+				echo You must supply an object.
+				breaksw
+			endif		
+			### check if only one input ornot###
+			#echo 1
+			if ( -e ~/O/$input[2] )then
+				;
+			else
+				echo "I don't know what that is."
+				breaksw
+			endif
+			
+			#echo 2
+			#echo input1 $input[1]
+			#echo input2 $input[2]
+			
+			set shaking_list = ( 0 )
+			
+			if ( -e ~/I/$input[2] || -e `pwd -P`/$input[2] )then
+				;
+			else
+				echo "I don't see that here."
+				breaksw
+			endif
+			
+			
+			
+			
+			
+			
+			if ( $#input == 1 )then
+				echo "You must supply an object"
+				breaksw	
+			else if ( $input[2] == 'tree' || $input[2] == 'trees' || $input[2] == 'palm' )then
+				echo "You begin to shake a tree, and notice a coconut begin to fall from the air.\nAs you try to get your hand up to block it, you feel the impact as it lands\non your head."
+				echo "You are dead."
+				echo "You have scored 0 out of a possible 90 points.\n"
+				exit
+			endif
+			#echo 3
+			
+			if ( $input[2] == 'bear' )then
+				echo "As you go up to the bear, it removes your head and places it on the ground."
+				echo "You are dead."
+				echo "You have scored 0 out of a possible 90 points.\n"
+				exit
+			endif
+			#echo 3-3
+			
+			if ( -e ~/I/$input[2] && ( $input[2] == 'card' || $input[2] == 'board' || $input[2] == 'cpu' ) )then
+				echo "Shaking a computer board seems to have no effect."
+				breaksw			
+			else if ( -e ~/I/$input[2] && ( $input[2] == 'key' ) )then
+				echo "Shaking a brass key seems to have no effect."
+				breaksw
+			else if ( -e ~/I/$input[2] && ( $input[2] == 'emerald' ) )then
+				echo "Shaking a bracelet seems to have no effect."
+				breaksw
+			else if ( -e ~/I/$input[2] && ( $input[2] == 'food' ) )then
+				echo "Shaking some food seems to have no effect."
+				breaksw
+			else if ( -e ~/I/$input[2] )then
+				echo "Shaking a "$input[2]" seems to have no effect."
+				breaksw
+			else
+				
+				if ( -e `pwd -P`/$input[2] )then
+					echo "You don't have that.";
+				else
+					echo "I don't see that here."
+					breaksw
+				endif				
+				
+				
+			endif
+			
+			
+			
+			#echo 5
+						
+			
+			
+			breaksw
+		case {climb}:
+			#echo climb
+			#echo $input[2]
+			### check if only one input ornot###
+			if ( $#input == 1 )then
+				echo "You must supply an object."
+				breaksw	
+			endif
+			### check if only one input ornot###
+			
+			if ( -e ~/O/$input[2] )then
+				;
+			else
+				echo "I don't know what that object is."
+				breaksw
+			endif
+			if ( -e `pwd -P`/$input[2] )then
+				;
+			else
+				echo "I don't see that here."
+				breaksw
+			endif
+			
+			#echo 222
+			
+			if ( $input[2] == 'tree' || $input[2] == 'trees' || $input[2] == 'palm' )then
+				echo "You manage to get about two feet up the tree and fall back down.  You\nnotice that the tree is very unsteady."
+			else 
+				echo "You can't climb that."
+			endif
+			
+			
+			
+			
+			breaksw
+		case {drop,throw}:
+			#echo in_drop
+			#echo intput 1 : $input[1]
+			#echo intput 2 : $input[2]		
+				 		
+			### check if only one input ornot###
+			if ( $#input == 1 )then
+				echo You must supply an object.
+				breaksw
+			endif		
+			### check if only one input ornot###
+			
+			if ( -e ~/O/$input[2] )then
+				;
+			else
+				echo "I don't know what that is."
+				breaksw
+			endif
+			if ( -e ~/I/$input[2] )then
+				;
+			else
+				echo "You don't have that."
+				breaksw
+			endif
+			
+			if ( -e ~/O/$input[2] && -e ~/I/$input[2] )then
+				#echo exist
+				#echo ~/I/$input[2] `pwd -P`
+				touch rmrm$input[2]		
+			else if ( -e ~/O/$input[2] )then				
+				echo "You do not have that."
+				touch without ; touch did		
+			else
+				echo "I don't know what that is."
+				touch without ; touch did				
+			endif
+			
+			if ( -e rmrmfood && -e `pwd`/.key )then
+				echo  "Done.\nThe bear takes the food and runs away with it. He left something behind."
+				rm ~/I/food
+				rm `pwd`/bear
+				mv `pwd`/.key `pwd`/key
+				rm rmrmfood
+			endif
+			if ( -e rmrmemerald )then
+				mv ~/I/bracelet `pwd -P`  && mv ~/I/emerald `pwd -P` ; rm rmrmemerald ; echo "Done."
+			endif
+			if ( -e rmrmemerald )then
+				mv ~/I/bracelet `pwd -P`  && mv ~/I/emerald `pwd -P` ; rm rmrmemerald ; echo "Done."
+			endif
+			if ( -e rmrmbracelet )then
+				mv ~/I/card `pwd -P` && mv ~/I/cpu `pwd -P` && mv ~/I/board `pwd -P`; rm rmrmcard ; echo "Done."
+			endif
+			if ( -e rmrmcard )then
+				mv ~/I/bracelet `pwd -P`  && mv ~/I/emerald `pwd -P` ; rm rmrmemerald ; echo "Done."
+			endif
+			if ( -e rmrmcpu )then
+				mv ~/I/card `pwd -P` && mv ~/I/cpu `pwd -P` && mv ~/I/board `pwd -P`; rm rmrmcpu ; echo "Done."
+			endif
+			if ( -e rmrmcpu )then
+				mv ~/I/card `pwd -P` && mv ~/I/cpu `pwd -P` && mv ~/I/board `pwd -P`; rm rmrmcpu ; echo "Done."
+			endif
+			if ( -e rmrmboard )then
+				mv ~/I/card `pwd -P` && mv ~/I/cpu `pwd -P` && mv ~/I/board `pwd -P`; rm rmrmboard ; echo "Done."
+			endif
+			if ( -e rmrmkey )then
+				mv ~/I/key `pwd -P` ; chmod 600 ~/PA2/start/e/e/ne/ne/ne ; rm rmrmkey ; echo "Done."
+			endif
+			if ( -e rmrmboard )then
+				mv ~/I/card `pwd -P` && mv ~/I/cpu `pwd -P` && mv ~/I/board `pwd -P`; rm rmrmboard ; echo "Done."
+			endif
+			
+			if ( -e without )then
+				rm without
+			endif					
+			if ( -e ~/I/$input[2] )then
+				#echo ~/I/$input[2] `pwd -P`
+				mv ~/I/$input[2] `pwd -P`
+				echo "Done.";
+			endif	
+			
+			if ( -e rmrm$input[2] )then
+				#echo rmrm$input[2]	
+				rm rmrm$input[2]				
+			endif
+			
+			
+			
+			breaksw
+		case dig:
+			#alias dig=' (ls ~/I/shovel >& ~/X || echo "You have nothing with which to dig" );
+			#ls ~/I/shovel >& ~/X && (( ls `pwd`/.card >& ~/X  && echo "I think you found something." && ( mv .board board ; mv .card card ; mv .cpu cpu )) || ((ls `pwd`/.cpu >& ~/X || ls `pwd`/.card >& ~/X || ls `pwd`/.cpu >& ~/X ) || echo "Digging here reveals nothings."))'
+			ls ~/I/shovel >& ~/X && (( ls `pwd`/.card >& ~/X  && echo "I think you found something." && ( mv .board board ; mv .card card ; mv .cpu cpu )) || ((ls `pwd`/.cpu >& ~/X || ls `pwd`/.card >& ~/X || ls `pwd`/.cpu >& ~/X ) || echo "Digging here reveals nothings."))
+			
+			if ( -e  ~/I/shovel )then
+				#echo ~/I have shovel
+				if ( -e `pwd`/.card)then
+					echo "I think you found something." 
+					mv .board board
+					mv .card card
+					mv .cpu cpu
+				else
+					
+				endif				
+			else
+				#echo ~/I dont have shovel
+				echo "You have nothing with which to dig"
+			endif
+			
+			breaksw
+		case quit:
+			#alias quit 'echo You scored 0 out of a possible 90 points.;exit'
+			#echo ""
+			echo "\nYou have scored 0 out of a possible 90 points.";
+			exit
+			breaksw
+		case i:
+		#alias i='echo You currently have: ; (cd ~/I; ls ???* | cat -n |tr  "[:digit:]" " " | tr -d "\t"  | cat -n | tr "[\t]" ["*"] | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/I/.messages) 2> ~/X'
+			echo You currently have: ;
+			set returnadd = `pwd -P`
+			cd ~/I; 
+			( ls ???* >& ~/X ) && ( ls ???* | cat -n | tr  "[:digit:]" " " | tr -d "\t" | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/I/.messages) 
+			cd $returnadd
+			breaksw
+		case x:
+		
+			### check if only one input ornot###
+			if ( $#input == 1 )then
+				echo You must supply an object.
+				breaksw
+			endif		
+			### check if only one input ornot###
+			if ( -e ~/O/$input[2] )then
+				;
+			else
+				echo "I don't know what that is."
+				breaksw
+			endif			
+			
+			if ( -e ~/I/$input[2] )then
+				cat ~/I/$input[2] | xargs echo ~/O | tr -t " " "/" | xargs cat
+				breaksw
+			else			
+				if ( -e $input[2] )then
+					cat $input[2] | xargs echo ~/O | tr -t " " "/" | xargs cat
+				else if ( -e ~/O/$input[2] )then
+					echo "I don't see that here."
+					breaksw
+				else
+					echo "I don't know what that is."
+					breaksw
+				endif			
+			endif
+			
+			#if ( -e `pwd -P`/$input[2] )then
+			#	;
+			#else
+			#	echo "I don't see that here."
+			#	breaksw
+			#endif
+			
+			breaksw
+		case {look,l}:
+			#alias l='mv 1 9 >& ~/X ;see'
+			if ( -e 1 )then
+				#echo 1
+				mv 1 9
+			else
+				echo not9
+			endif
+			###see
+			#alias see='head -n `find 9 2> /dev/null || find 1` .d ; mv 9 1 2> /dev/null ; itemAlerts; echo -n'
+			#head -n `find 9 || find 1` .d ; 
+			if ( -e 9 )then
+				#echo 9
+				head -n 9 .d
+				mv 9 1
+			else if ( -e 1 )then
+				#echo 1
+				head -n 1 .d
+			else
+				echo not1or9
+			endif
+			#mv 9 1 2> /dev/null ; 
+			
+			# itemAlerts; echo -n'
+			(ls ???* >& ~/X && ls ???* ) | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts 
+			echo -n	
+			###
+			
+			#echo you want to look
+			breaksw
+		case see:
+			#alias see='head -n `find 9 2> /dev/null || find 1` .d ; mv 9 1 2> /dev/null ; itemAlerts; echo -n'
+			#head -n `find 9 || find 1` .d ; 
+			if ( -e 9 )then
+				#echo 9
+				head -n 9 .d
+				mv 9 1
+			else if ( -e 1 )then
+				#echo 1
+				head -n 1 .d
+			else
+				#echo not1or9
+			endif
+			#mv 9 1 2> /dev/null ; 
+			
+			# itemAlerts; echo -n'
+			(ls ???* >& ~/X && ls ???* ) | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts 
+			echo -n	
+			#echo you want to see
+			breaksw	
+		case {get,take}:
+			#echo get_in
+			#echo input $input
+			
+			### check if only one input ornot###
+			if ( $#input == 1 )then
+				echo You must supply an object.
+				breaksw
+			endif		
+			### check if only one input ornot###
+			
+			
+			if ( $input[2] == 'all')then
+				#echo now : `pwd -P`	
+				
+				#ls ???* >& ~/X && (echo something ; set list = ( `ls ???*` )) || echo nothing 
+				
+				#if ( ls ???* )
+				 
+				set list = ( `ls ???* >& ~/X && ls ???*` ) 
+				
+				
+					
+				#set list = ( `ls ???*` )
+				#echo $list
+				#ls ???*
+				
+				foreach i  ( $list )
+					#echo i = $i
+					if ( $i == 'board' || $i == 'card' || $i == 'cpu' )then
+						echo A computer board: Taken.
+						mv `pwd -P`/card ~/I
+						mv `pwd -P`/cpu ~/I
+						mv `pwd -P`/board ~/I
+						#mv `pwd -P`/computer board ~/I
+						breaksw
+					else	
+					#set nonget = (board bracelet card cpu emerald food key lamp shovel)					
+						if ( $i == $nonget[2] || $i == $nonget[5] )then		
+							echo A bracelet : Taken.							
+							mv `pwd -P`/$i ~/I	
+							breaksw
+						endif			
+						
+						if ( $i == $nonget[6] )then
+							echo A $i : Taken.
+							mv `pwd -P`/$i ~/I	
+						endif						
+						if ( $i == $nonget[7] )then
+							echo A $i : Taken.
+							chmod 777 ~/PA2/start/e/e/ne/ne/ne
+							mv `pwd -P`/$i ~/I
+						endif
+						if ( $i == $nonget[8] )then
+							echo A $i : Taken.
+							mv `pwd -P`/$i ~/I	
+						endif						
+						if ( $i == $nonget[9] )then							
+							mv `pwd -P`/$i ~/I
+							echo A $i : Taken.
+						endif
+					endif 								
+				end		
+				breaksw
+			endif 
+			
+			
+			if ( -e ~/O/$input[2] )then
+				;
+			else
+				echo "I don't know what that is."
+				breaksw
+			endif
+			if ( -e `pwd -P`/$input[2] )then
+				;
+			else
+				echo "I do not see that here."
+				breaksw
+			endif
+			#echo > ~/A/$input[2]
+			
+			#set nonget = (board bracelet card cpu emerald food key lamp shovel)	
+			if ( -e ~/O/$input[2] )then
+				if ( -e ./$input[2] )then
+					if ( $input[2] == $nonget[1] )then							
+							echo Taken.
+							#echo Taken.mv 2 cpu
+							#echo Taken.mv 2 card							
+							#mv `ls ~/A|basename ~/A/*` ~/I
+							mv `pwd -P`/board ~/I
+							mv `pwd -P`/card ~/I
+							mv `pwd -P`/cpu ~/I
+					else if ( $input[2] == $nonget[2] )then		
+							echo Taken.
+							#echo Taken.mv 2 emerald
+							mv `pwd -P`/bracelet ~/I
+							mv `pwd -P`/emerald ~/I
+					else if ( $input[2] == $nonget[3] )then
+							echo Taken.
+							#echo Taken
+							#echo Taken
+							mv `pwd -P`/board ~/I
+							mv `pwd -P`/card ~/I
+							mv `pwd -P`/cpu ~/I
+					else if ( $input[2] == $nonget[4] )then
+							echo Taken.
+							#echo Taken.mv 2 card
+							#echo Taken.mv 2 board
+							mv `pwd -P`/board ~/I
+							mv `pwd -P`/card ~/I
+							mv `pwd -P`/cpu ~/I
+					else if ( $input[2] == $nonget[5] )then
+							echo Taken.
+							#echo Taken.mv 2 bracelet
+							mv `pwd -P`/emerald ~/I
+							mv `pwd -P`/bracelet ~/I
+					else if ( $input[2] == $nonget[6] )then
+							echo Taken.
+							mv `pwd -P`/food ~/I
+					else if ( $input[2] == $nonget[7] )then
+							echo Taken.
+							chmod 777 ~/PA2/start/e/e/ne/ne/ne
+							mv `pwd -P`/key ~/I
+					else if ( $input[2] == $nonget[8] )then
+							echo Taken.
+							mv `pwd -P`/lamp ~/I
+					else if ( $input[2] == $nonget[9] )then
+							echo Taken.
+							mv `pwd -P`/shovel ~/I
+					else
+						echo "You cannot take that."
+					endif
+				else	
+					echo "I do not see that here."
+			else		
+				echo "I don't know what that is."
+			endif
+			#rm -f ~/A/*
+		endif	
+				
+		breaksw
+		case {n,e,s,w}:			
+			#echo go to : $input	
+			#echo go to : $now
+						
+			if ( $input == "n" )then
+				#echo in_n
+				if ( -x $now/$input )then 
+					#echo 111
+					cd $input
+					cd `pwd -P`
+				####
+					if ( -e `pwd -P`/9 )then
+						head -9 .d
+						mv 9 1
+					else if ( -e `pwd -P`/1 )then
+						head -1 .d
+					endif
+				####	
+				#alias itemAlerts '( find ???* > ~/X ) && ( ls ???* | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts )'
+					( ls ???* >& ~/X && ls ???* ) | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts 
+					echo -n				
+				else if ( -r $now/n )then
+					#echo nokey
+					nokey	
+				else 
+					#echo nogo
+					nogo	
+				endif			
+			else if ( -e $now/$input )then 
+				cd $input	
+				cd `pwd -P`
+				#alias see 'head -n `find 9 || find 1` .d ; mv 9 1 '				
+				#echo see
+				if ( -e `pwd -P`/9 )then
+					head -9 .d
+					mv 9 1
+				else if ( -e `pwd -P`/1 )then
+					head -1 .d
+				endif
+				#alias itemAlerts '( find ???* > ~/X ) && ( ls ???* | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts )'
+				(ls ???* >& ~/X && ls ???* ) | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts 
+				echo -n
+			else 
+				nogo	
+			endif	
+			#echo after now : `pwd -P`
+		breaksw
+		case {ne,nw,se,sw}:
+			#echo go to 22 : $input	
+			#set now = `pwd -P`
+			#echo now : $now	
+			#####   ne    #####		
+			if ( $input == "ne" )then
+				if ( -x $now/$input )then 
+					cd $input
+					cd `pwd -P`
+				####
+					if ( -e `pwd -P`/9 )then
+						head -9 .d
+						mv 9 1
+					else if ( -e `pwd -P`/1 )then
+						head -1 .d
+					endif
+				#alias itemAlerts '( find ???* > ~/X ) && ( ls ???* | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts )'
+					(ls ???* >& ~/X && ls ???* ) | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts 
+					echo -n
+				####	
+				else if ( -r $now/ne )then
+					nokey
+					#echo ne:nokey
+					#echo `pwd -P`	
+				else 
+					nogo
+					#echo nogo2ne	
+				endif	
+			#####   se    #####	
+			else if ( $input == "se" )then
+					#echo now : $now
+					if ( -e bear )then
+						echo bear
+						echo "The bear is very annoyed that you would be so presumptuous as to try\nand walk right by it.  He tells you so by tearing your head off."
+						echo "\nYou are dead.\nYou have scored 0 out of a possible 90 points."
+						#echo "----- exit ir script -----"
+						exit
+					else if ( -e $now/$input )then 
+						#echo here no bear no in start/e/e/se/se
+						cd $input	
+						cd `pwd -P`	
+					####
+						if ( -e `pwd -P`/9 )then
+							head -9 .d
+							mv 9 1
+						else if ( -e `pwd -P`/1 )then
+							head -1 .d
+						endif
+						#alias itemAlerts '( find ???* > ~/X ) && ( ls ???* | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts )'
+						(ls ???* >& ~/X && ls ???* ) | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts 
+						echo -n
+					####	
+					else 						
+						#echo nogo_2_se
+						nogo
+					endif
+			#####   sw nw    #####			
+			else if ( -e $now/$input )then 
+					cd $input	
+					cd `pwd -P`	
+				####
+					if ( -e `pwd -P`/9 )then
+						head -9 .d
+						mv 9 1
+					else if ( -e `pwd -P`/1 )then
+						head -1 .d
+					endif
+						#alias itemAlerts '( find ???* > ~/X ) && ( ls ???* | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts )'
+					(ls ???* >& ~/X && ls ???* ) | cat -n | tr "[:digit:]" " " | tr -d "\t"  | cat -n | tr "\t" "*" | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts 
+					echo -n
+					####	
+			else 
+				nogo
+				#echo nogo_2		
+			endif
+			#echo after now : `pwd -P`
+		breaksw
+		#case ls:
+		#	echo now : `pwd -P`
+		#	/bin/ls
+		#	breaksw	
+		case lsa:
+			echo now : `pwd -P`
+			/bin/ls -a
+			breaksw		
+		default:
+			#echo now : `pwd -P`
+			echo "I don't understand that."
+			#echo now : `pwd -P`
+			breaksw
+	endsw
+	#echo now : $now
+	echo ">\c"
+	set input = ( $< )
+	while ( $#input == 0 )
+		#echo while3
+		echo -n '>'	
+		set input = ( $< )
+	end
+	#echo input = $input
+end
+
+
