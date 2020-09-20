@@ -1,0 +1,32 @@
+rm -f ~/X ~/O ~/I ~/A
+ln -s /dev/null ~/X
+ln -s ~/PA2/inventory ~/I
+ln -s ~/PA2/objects ~/O
+ln -s ~/PA2/obj ~/A
+alias nogo='echo You cannot go that way.'
+alias nokey='echo You do not have a key that can open this door.'
+alias quit='echo You scored 0 out of a possible 90 points.;exit'
+alias l='mv 1 9 >& ~/X ;see'
+alias drop='~/drop.sh'
+alias see='head -n `find 9 2> /dev/null || find 1` .d ; mv 9 1 2> /dev/null ; itemAlerts; echo -n'
+alias itemAlerts='(ls ???* | cat -n |tr  "[:digit:]" " " | tr -d "\t"  | cat -n | tr "[\t]" ["*"] | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/O/.alerts) 2> ~/X'
+
+
+alias e='ls `pwd -P`/e >& ~/X && cd e >& ~/X && cd `pwd -P` >& ~/X && (see) || nogo ; '
+alias s=' ls `pwd -P`/s >& ~/X && cd s >& ~/X && cd `pwd -P` >& ~/X && (see) || nogo ; '
+alias w=' ls `pwd -P`/w >& ~/X && cd w >& ~/X && cd `pwd -P` >& ~/X && (see) || nogo ; '
+alias se=' ls `pwd -P`/se >& ~/X && cd se >& ~/X && cd `pwd -P` >& ~/X && (see) || nogo ; '
+alias sw=' ls `pwd -P`/sw >& ~/X && cd sw >& ~/X && cd `pwd -P` >& ~/X && (see) || nogo ; '
+alias nw=' ls `pwd -P`/nw >& ~/X && cd nw >& ~/X && cd `pwd -P` >& ~/X && (see) || nogo ; '
+alias n=' ls `pwd -P`/n >& ~/X && cd n >& ~/X && cd `pwd -P` >& ~/X && (see) || ( ( ls `pwd -P`/n >& ~/X) && nokey || nogo )'
+alias ne=' ls `pwd -P`/ne >& ~/X && cd ne >& ~/X && cd `pwd -P` >& ~/X && (see) || ( ( ls `pwd -P`/ne >& ~/X) && nokey || nogo )'
+
+alias i='echo You currently have: ; (cd ~/I; ls ???* | cat -n |tr  "[:digit:]" " " | tr -d "\t"  | cat -n | tr "[\t]" ["*"] | tr -t "*" "e" | cat | tr "[:digit:]" "-" | xargs fgrep ~/I/.messages) 2> ~/X'
+alias x='(cat | xargs echo ~/O | tr -t " " "/" | xargs cat ) <'
+alias get='( (echo > ~/A/`cat`) && (ls ~/A/br* &> ~/X || ls ~/A/boa* &> ~/X || ls ~/A/car* &> ~/X || ls ~/A/cp* &> ~/X || ls ~/A/em* &> ~/X || ls ~/A/foo* &> ~/X || ls ~/A/k* &> ~/X || ls ~/A/la* &> ~/X || ls ~/A/sh* &> ~/X ) && ( mv `ls ~/A|basename ~/A/*` ~/I ) && ( echo Taken. ) || (echo "You cannot get that.") ; ( ls ~/A/bracelet &> ~/X ) && ( mv `pwd -P`/emerald ~/I &> ~/X) ; ( ls ~/A/emerald &> ~/X ) && ( mv `pwd -P`/bracelet ~/I &> ~/X) ; (ls ~/A/board &> ~/X ) && ( mv `pwd -P`/cpu ~/I &> ~/X) && ( mv `pwd -P`/card ~/I &> ~/X) && ( mv `pwd -P`/board ~/I &> ~/X); ( ls ~/A/key &> ~/X )&& ( chmod 777 ~/PA2/start/e/e/ne/ne/ne ; ); (rm -f ~/A/*) ) <'
+alias dig=' (ls ~/I/shovel >& ~/X || echo "You have nothing with which to dig" );ls ~/I/shovel >& ~/X && (( ls `pwd`/.card >& ~/X  && echo "I think you found something." && ( mv .board board ; mv .card card ; mv .cpu cpu )) || ((ls `pwd`/.cpu >& ~/X || ls `pwd`/.card >& ~/X || ls `pwd`/.cpu >& ~/X ) || echo "Digging here reveals nothings."))'
+
+cd; PS1='>'; chmod 777 ~/PA2/start/e/e/ne/ne/ne ; chmod 777 ~/PA2/start/e/e/ne/ne/ne/n ; rm -rf ~/PA2 ; tar xvf PA1.tar >& ~/X; cd ~/PA2/start ; l
+
+
+
