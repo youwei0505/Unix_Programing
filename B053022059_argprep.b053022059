@@ -1,0 +1,212 @@
+#!/bin/sed -f
+
+s/insert/put/g
+s/throw/drop/g
+s/take/get/g
+s/^x$/l/g
+s/^l \([a-z]\{2,\}\)/x \1/
+s/palms/tree/g
+s/emerald/bracelet/g
+s/card/board/g
+s/cpu/board/g
+
+#/\([ ]*[a-z]\{1,\}[ ]*[a-z]\{3,\}\).*/ c ooo
+
+#s/^[ ]*[^p]/ppp/
+
+
+/^[ ]*[^p ]/{
+	#p
+	s/\([ ]*[a-z]\{1,\}[ ]*[a-z]\{1,\}\).*/\1/
+	#p
+}
+
+N
+
+s/[ ]\{2,\}/ /g
+s/^[ ]//g
+
+/^[ ]*[^xli] .*/cI don't understand that
+
+
+s/eat/e/g
+s/drop/d/g
+s/get/g/g
+s/climb/c/g 
+s/shake/s/g 
+s/^put/p/g
+
+
+
+/^i.*/ ci
+/^l.*/ cl
+
+/^[a-hj-wy-z]\{1\}$/ cI don't understand that
+
+
+#/^p \([a-z]\{3,\}\).*,.*,.*\1.*/ bin_list
+	#cI do not know what that is.
+
+
+	
+	
+	
+/g all/ cg all
+
+/^[a-z]\{2,\}/cI don't understand that
+
+/c\n.*tree/ ba
+/c\n.*/ bcond1
+bend
+:a {
+	cc tree
+	bend
+	}
+:cond1
+	{
+	cThere is nothing here to climb.
+	bend
+	}
+:end
+
+
+/^[edgcspx]\n.*$/ cYou must supply an indirect object.
+
+
+
+h;
+
+s/.*//
+
+s//bear bin bins board boulder bracelet cabinet coconut coconuts computer food key lamp shovel tree trees vax/
+
+H
+
+x
+
+s/\n/,/g
+
+
+
+
+
+#/^[edgcspx] []/ cnoinlist
+
+/^[p]\{1\}/bp
+
+
+
+
+
+
+/^[ed]/{
+/^[ed] \([a-z]\{3,\}\),[^,]*,[^,]*\1[^,]*/{	
+		#c hoed
+		s/,.*//
+		bend1
+	}
+	cI do not know what that is.
+}
+
+
+	
+/^[ed] /bhave1
+
+
+
+#s/^[x] \([a-z]\{2,\}\),[^,]*,[^,]*\1[^,]*/\1/
+
+/^[gcsx] \([a-z]\{2,\}\),[^,]*,[^,]*\1[^,]*/ bchecklist
+	cI do not know what that is.
+:checklist
+/^[gc]\{1\}/bgc
+/^[sx]\{1\}/bsx
+	cI do not know what that is.	
+
+
+
+
+
+:gc
+{
+
+#/^[gc] \([a-z]\{3,\}\),[^,]*\1[^,]*/bhave1
+
+/^[gc] \([a-z]\{3,\}\),[^,]*\1[^,]*,[^,]*/bhave1
+	
+	cI do not see that here.
+	s/,.*//
+	bend1
+:have1
+			
+	s/,.*//
+bend1
+}
+
+:sx
+{		
+
+/^[sx] \([a-z]\{3,\}\),[^,]*\1[^,]*,[^,]*/bsymbol
+	
+	s/,.*/ @/
+	q
+	bend1
+:symbol
+	
+	s/,.*/888/
+	bend1
+}
+
+:p
+{
+ #p
+ 
+ /p \([a-z]*\) \([a-z]*\),[^,]*,[^,]*/ cYou must supply an indirect object.
+ 
+ 	
+ #p emerald
+ /p [a-z]*,.*/ cYou must supply an indirect object.
+ 
+ 
+  #s/^p \([a-z]\{3,\}\).*,.*,.*\1.*/\1/
+  #q
+/^p \([a-z]\{3,\}\).*,.*,.*\1.*/ bin_list
+	cI do not know what that is.
+:in_list
+{
+	#s/^p in \([a-z]\{3,\}\).*,.*,.*\1.*/\1/
+    #q
+	
+	/^p \([a-z]\{3,\}\).*,.*,.*\1.*/ bsymbol2
+	s/,.*/ @/
+	bend1
+	
+:symbol2
+	#s/,.*//
+	
+	#s/.* in \([a-z]\{3,\}\)[^,]*,[^,]*\1[^,]*,[^,]*$/\1/
+	#q
+	/.* in \([a-z]\{3,\}\)[^,]*,[^,]*\1[^,]*,[^,]*$/{
+	s/,.*// 
+	q
+	}
+	/.* in \([a-z]\{3,\}\)[^,]*,[^,][^,]*,[^,]*\1[^,]/ {
+	s/,.*/ @/
+	q
+	}
+	/.* in \([a-z]\{3,\}\)[^,]*,[^,][^,]*,[^,]*\1[^,]/bsecondinlist
+	cI do not know what that indirect object is.
+:secondinlist
+	bend1
+}
+
+
+
+}
+:end1
+
+s/^\([a-z]\{1,\} [a-z]\{1,\}\).*/\1/g
+
+
+q
+
