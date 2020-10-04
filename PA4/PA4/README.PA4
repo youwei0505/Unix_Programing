@@ -1,0 +1,206 @@
+                            UNIX System Programming
+                           Programming Assignment #4
+
+Due: Monday, May 18  at  11:59 pm.
+
+Submission method: You will post to the course website, just like the previous
+                   assignment. 
+
+Submission rules: I REQUIRE you to FOLLOW THESE RULES:
+
+                  1. Submit one file named "<your student ID>.PA3"
+                     This file will be a csh or tcsh script with the first
+                     line of the file being #!/usr/bin/csh or #!/usr/bin/tcsh
+                     or #!/bin/csh or #!/bin/tcsh or whatever path your system
+                     uses for cshell.
+                     Your script will use the tar file from the previous
+                     homework, but it won't change it -- so that tar file is
+                     not submitted for this assignment.
+                     
+                  2. Submissions made after the deadline will be ignored.
+                     (That means: no late submissions on this assignment.)
+                     (By the way, assignments are a significant part of your
+                      grade. So start early and ask questions.)
+                  
+                  This is a large class. Unless each of you follows the above
+                  rules, the TAs' work becomes so hard. So I INSIST that you 
+                  FOLLOW the above rules. If you don't, we won't accept your 
+                  homework.
+
+                  If you have questions about these rules, you may post your 
+                  questions to the course website.
+
+
+Getting help:   - The Professor has office hours on Monday from 12:30-2:30, 
+                  and on Friday from 10:00-12:00, in room 9037.  He can also 
+                  be reached by email.
+                - The TAs are also available to answer your questions.
+                - Questions about the assignment can be posted to the 
+                  Discussion Forum.
+                - You may also discuss the ideas of the assignment with your
+                  classmates. Such discussions can be quite helpful to your 
+                  learning -- IF you ONLY talk about the general concepts of
+                  the steps of the assignment.
+                  - If, however, you tell other students the specific details
+                    of your implementation, then you are not helping each other
+                    to learn; you are just doing the work for them.
+                    In other words, you are cheating. You CANNOT show another
+                    student ANY part of the answer to the assignment.
+
+Cheating policy:  We encourage students to form study groups. But this does not
+                  mean sharing code. If students are found to be sharing work,
+                  they can receive a 0 for the entire course, or worse.
+                  It is cheating to let another student see your work, or to 
+                  let them look over your shoulder when your code is on the
+                  screen.
+                  A good way to know you cheated: if you have code that is in
+                  your solution just because another student told you to put
+                  it there, but you don't actually understand it.
+                  If you are still unsure, you can ask the TA for more
+                  explanation.
+                  We always look for evidence of cheating, so don't do it.
+                  (In any event, even if you do not get caught, those who 
+                  copy the homework will not learn the material, so they 
+                  will fail the exam.)
+
+Most Important    The programming assignments are a large part of the grade.
+Things to Know:   This large point value means that, if you don't do them, you
+                  may fail.
+                  The large point value also explains why the policy against
+                  cheating is strictly enforced.
+                  
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ - - - - - - - - - - - - - - -  Project Overview - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+You will implement part of the previous homework as a sed script named argprep.
+It will also have some improvements to match the game's behavior better.
+
+If you look in the directory containing this README file, you will see:
+% ls
+README.PA4  testarg    testarg.out
+%
+
+The testarg program is a cshell script that runs some tests on your argprep
+program. You cannot run this script if you don't have an argprep file. But
+you can look at the expected output, in the testarg.out file. That file has
+a thorough explanation of what the tests are and why the answers are as shown.
+
+One thing to understand is how the testarg script invokes you argprep script:
+% cat testarg | sed -n 119,121p
+ echo -n put shovel in emerald | sed ':t;s/^.\{,29\}$/&./;tt'
+(echo put shovel in emerald; ls ???* | sed ':a;$'\!'{N;ba;};s,\n, ,g')|\
+                                       sed -f ~/argprep
+%
+
+See from the above that your script always gets 2 lines of input: a command
+line, and a list of all of the objects in the current room.
+
+Before reading further in this README file, read through testarg.out.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ - - - - - - - - - -  Guidance on implementing the script  - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+One of the most useful features of sed is the s command. In this game there are
+many synonyms, and these sometimes complicated our earlier homeworks.
+So, as a first step, you script should replace the following commands with
+their synonyms:
+ insert=>put, throw=>drop, take=>get, x(with no arguments)=>l, l(with args)=>x.
+Also replace these objects with their synonyms:
+ palms=>tree, emerald=>bracelet, card=>board, cpu=>board
+In addition, remove all unnecessary spaces in requested command.
+
+Once you've implemented the above, test it by adding a 'q' to the end of your
+script and saving it. Then run testarg. The answers won't be right, but you
+will be able to see if the above changes have worked. (But you should also run
+additional tests.)
+
+Next remove the 'q'; that you had added and replace it with an "N". Now the
+things in this location of the game are on the second line. Because we know
+that there are always only 2 input lines, we know that a 'd' would exit the
+script while printing nothing and without reading any more input (because there
+is no more input). By that same reasoning, we also know that a 'c' would first
+display a message instead of the pattern space and would then quit. Furthermore
+we know that a 'q' will display the pattern space (because sed was run without
+a -n flag) and quit. 
+
+Use the above-mentioned 'd', 'c', or 'q' commands, along with predication, to
+do the following:
+If the pattern space is empty: exit and print nothing.
+If the command is 'i' print 'i' (and print nothing else) and quit
+If the command is 'l' print 'l' (and print nothing else) and quit
+
+Note: When I say, above, "and quit", I don't necessarily mean that you use the
+      'q' command. I just mean that the sed program must stop running.
+
+
+At this point, the only valid one-letter command is 'x', so:
+If the command is only one letter, but isn't x, print I don't understand that,
+and quit.
+
+Now that we have tested for bad one-letter commands, we can turn our commands
+into one letter each, by replacing them by their first letter.
+
+Then add a 'q' to the script, and test it again with testarg. It should be
+getting some of the answers correct. (But really, for both here and below, you
+want to not only add a 'q' but to also first remove everything after the \n, so
+that the output of testarg is more readable.)
+
+
+Next, remove the 'q' again. We'll now deal with some special cases:
+A climb command with no argument becomes "c tree" if a tree's in this location.
+Otherwise, a climb command with no arguments prints "There is nothing here to 
+  climb." and quits.
+A "get all" command (which will now be stored as "g all") will print "g all"
+  and then quit.
+Legal commands without an argument have already been handled, so any remaining
+  commands with no argument will print "You must supply an object." and quit.
+Any multi-letter command must be an illegal command. Print "I don't understand
+  that" and quit. (But note: some game commands (such as "nw") will never be
+  sent into you script.)
+
+Again, this is a good place to add a "q", test the output, then remove the "q".
+
+
+The next part of the code test whether the first argument is a valid object.
+Hint 1: With some synonyms removed, the valid objects are: bear, bin, bins,
+        board, boulder, bracelet, cabinet, coconut, coconuts, computer, food,
+	key, lamp, shovel, tree, trees, and vax
+Hint 2: Seeing if the object is in this list will require using the \1 syntax
+        of regular expressions.
+Hint 3: It will also require properly surrounding the first argument with \(\).
+Hint 4: You'll need to change the pattern space, but that means you'll need to
+        save it first (into the hold space), so that the original info isn't
+	lost.
+Hint 5: The object name must exactly match. It should not match to only part
+        of an object's name. For example "x bracel" should not match.
+
+If the first argument isn't a valid object, print "I do not know what that is."
+and the quit.
+
+Again, this is a good place to add a "q", test the output, then remove the "q".
+
+Next, perform a similar check for the third argument of any put commands.
+Also, if there are not at least 3 arguments, print an error message.
+And then, once again: add a "q", test the output, and then remove the "q".
+
+
+Now remove any unneeded arguments. For most commands that means only keep the
+first. For "put", that means remove all after the third. 
+
+Again add a "q", test the output, and then remove the "q".
+
+
+At this point, the object(s) are real. But are they here in this location? And
+do we care if they are here? Answers:
+ - These don't care: drop, eat, and put's first object.
+   So, for these, just throw away the \n and everything after it.
+ - These do care: climb, get.
+   So they get an error if not in this directory. (You'll again need to use \1)
+ - These may care (because it might be in the inventory): x, shake, and put's
+   third argument. So they get a '@' added, if not in this directory.
+
+Remember to remove everything after the \n. Once you've do all of this, your
+script is done!

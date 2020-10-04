@@ -1,0 +1,84 @@
+The first part of the new homework is to write a script, argprep, that checks
+the arguments of various sed commands (i, l, x, drop, get, eat, climb, & put).
+This file tests argprep with some sample inputs. I've also provided a sample
+output that you can compare to what you get from running this testarg script.
+
+The argprep file checks several things:
+ - Whether the command is legal.
+ - Whether the object is legal.
+ - If the object is in the current directory.
+
+With the above checks, some error messages are generated. But some other error
+messages cannot be generated with the checks just described. For example, the
+drop command requires that the given object be in the inventory directory --
+but the above checks don't look in that directory.
+
+We begin our tests in the starting directory:
+cd ~/dunnet2020/start
+
+And we begin by testing the eat and drop commands, since their implementations
+don't need to check if the object is in the current location:
+
+Notice, in the above output, that:
+ - The drop command became just a 'd'.
+ - Throw is synonym for drop.
+ - Some objects, like palms and emerald were replaced by their synonyms.
+ - Other objects, like vax and computer, aren't replaced even though they have
+   synonyms. (The reason these aren't replaced is because you don't need to
+   climb or get those objects, so it isn't necessary to simplify them.)
+ - Things like the tree cannot be picked up, so it can't be dropped -- but it
+   didn't give an error. That's because we didn't look in the inventory (yet).
+ - Other types of errors that can be detected without looking in the inventory
+   are directly displayed.
+
+
+Now we try 'i', because it is very simple. Since the 'i' command doesn't use
+arguments, they are ignored and don't cause errors:
+
+Now we look at the commands x, get, eat, climb, and shake. These commands do
+care about whether the object is in this location. For get and climb, the
+object must be in this location. For x and shake, the object CAN be in this
+location, or it can be in the inventory. This means that we can't create an
+error message for x and shake -- but we still want to know if the object is
+present. We will indicate this by adding a "@" at the end.
+
+Notice:
+ - The behavior of x: it is actually a synonym of l. A "l shovel" is the same
+   as a "x shovel" and an "x" with no arguments is the same as an "l".
+ - The behavior of climb with no arguments. It becomes "c tree" (the tree is
+   assumed, just like in the actual game).
+ - The behavior on the objects that aren't present, the lamp and bracelet.
+   These give errors for get and climb, but they get @ symbols for shake and
+   x. (In fact code we'll implement later will find that the lamp is not an
+   error, because it is in the inventory.)
+
+
+The next thing demonstrate is going to a different location. We'll go to where
+the emerald bracelet is:
+
+Notice:
+ - The behavior of climb with no arguments. It gives an error message that
+   does not mention the tree.
+ - The behavior of the emerald: now it doesn't give an error message or a "@".
+ - The behavior of the tree: now it does give an error message or a "@".
+
+
+Next, we'll look into the put command:
+
+Notice:
+ - The behavior of put is that the object you are putting must be in your
+   inventory (like drop requires), but the object you are trying to put into
+   can be in either your inventory or this location (like shake requires).
+ - The first argument is treated like drop treats it: there is no error if it
+   isn't in this location, nor is a "@" added.
+ - The second argument is ignored.
+ - The third argument is treated like shake treats its (only) argument: a "@"
+   is added.
+ - Any additional arguments are ignored.
+
+
+Other things will also be tested, such as having extra spaces or using
+unrecognized keywords:
+
+So that concludes the test program. See the README.pa4 file for a discussion
+of the implementing of argprep.
